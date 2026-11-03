@@ -1,8 +1,0 @@
-/* Mental Rotation */
-.mr-pair { display: flex; gap: 12px; width: min(92vw, 420px); }
-.mr-box { flex: 1; aspect-ratio: 1; background: var(--panel); border-radius: 16px; overflow: hidden; }
-.mr-shape { display: block; width: 100%; height: 100%; }
-.mr-sq { fill: var(--accent); stroke: #b9b0ff; stroke-width: 0.04; }
-.mr-status { font-size: 17px; }
-.mr-status.mr-miss { color: var(--bad); }
-.mr-ans { font-size: 24px; }
