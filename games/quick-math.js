@@ -1,6 +1,6 @@
 // Quick Math: 60 seconds, four answer choices. Questions get harder as your streak grows.
 (window.__games = window.__games || []).push({
-  id: 'quick-math', name: 'Quick Math', skill: 'Mental math', desc: '60 seconds, answer fast', icon: '➕',
+  id: 'quick-math', category: 'Numbers', name: 'Quick Math', skill: 'Mental math', desc: '60 seconds, answer fast', icon: '➕',
   start(el, api) {
     const DURATION = 60000;
     const MAX_LEVEL = 6;
