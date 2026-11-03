@@ -1,0 +1,24 @@
+/* Mini Sudoku */
+.ms-left { color: var(--muted); }
+.ms-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: min(92vw, 54vh, 400px); }
+.ms-box { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+.ms-cell {
+  aspect-ratio: 1; min-width: 0; border: 0; border-radius: 8px; padding: 0; background: var(--panel);
+  color: #a99cff; font-size: min(7.5vw, 4.4vh, 30px); font-weight: 500; line-height: 1;
+  font-variant-numeric: tabular-nums; transition: background 0.1s;
+}
+.ms-cell.given { color: var(--text); font-weight: 800; }
+.ms-cell.peer { background: var(--panel-2); }
+.ms-cell.same { background: #3a3470; }
+.ms-cell.sel { background: #3a3470; box-shadow: inset 0 0 0 3px var(--accent); }
+/* Clashes: red digit plus a dashed outline, so it isn't colour alone. */
+.ms-cell.bad { color: var(--bad); outline: 2px dashed var(--bad); outline-offset: -5px; }
+.ms-grid.solved .ms-cell { background: #1d3a2e; color: var(--good); }
+.ms-pad { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; width: min(92vw, 400px); }
+.ms-key {
+  min-height: 56px; border: 0; border-radius: 12px; padding: 0; background: var(--panel-2);
+  font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.ms-key:active { background: var(--accent); }
+.ms-key.full { opacity: 0.4; }
+.ms-erase { color: var(--bad); }
