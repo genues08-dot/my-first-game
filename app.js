@@ -1,11 +1,15 @@
 // App shell: menu, navigation, saved best scores.
-// A game registers itself with registerGame({ id, name, skill, desc, icon, start(el, api) }).
+// A game registers itself by pushing onto window.__games:
+//   { id, name, category, skill, desc, icon, start(el, api), lowerIsBetter?, formatBest? }
 // start() draws into `el` and may return a cleanup function.
-// api.best() -> saved best score, api.submit(score) -> true if it is a new best.
+// api.best() -> saved best (0 = none yet), api.submit(score) -> true if it is a new best.
+// Bests are higher-is-better unless the game sets lowerIsBetter (e.g. fastest time).
+// formatBest(value) turns a stored best into display text (e.g. "42.1s").
 // A game with an `href` instead of start() is just a link (used for snake).
 (() => {
   const games = window.__games || [];
   const root = document.getElementById('app');
+  const CATEGORIES = ['Memory', 'Logic', 'Planning', 'Attention', 'Numbers', 'Spatial', 'Words', 'Just for fun'];
   let cleanup = null;
 
   const store = {
@@ -13,23 +17,37 @@
     set(id, v) { try { localStorage.setItem('best:' + id, String(v)); } catch (e) { /* storage blocked */ } },
   };
 
+  function bestText(g) {
+    const v = store.get(g.id);
+    if (!v) return g.lowerIsBetter ? 'Best: –' : 'Best: 0';
+    return 'Best: ' + (g.formatBest ? g.formatBest(v) : v);
+  }
+
   function showMenu() {
     document.title = 'Brain Games';
     root.innerHTML =
       '<header class="top"><h1>Brain Games</h1><p>Pick a game</p></header><main class="menu"></main>';
     const menu = root.querySelector('.menu');
-    for (const g of games) {
-      const card = document.createElement('a');
-      card.className = 'card';
-      card.href = g.href || '#' + g.id;
-      const best = g.href ? '' : 'Best: ' + store.get(g.id);
-      card.innerHTML =
-        '<span class="ico"></span><span class="txt"><b></b><small></small></span><span class="best"></span>';
-      card.querySelector('.ico').textContent = g.icon;
-      card.querySelector('b').textContent = g.name;
-      card.querySelector('small').textContent = g.skill + ' · ' + g.desc;
-      card.querySelector('.best').textContent = best;
-      menu.append(card);
+    const cats = [...CATEGORIES, ...new Set(games.map((g) => g.category).filter((c) => !CATEGORIES.includes(c)))];
+    for (const cat of cats) {
+      const list = games.filter((g) => (g.category || 'Just for fun') === cat);
+      if (!list.length) continue;
+      const h = document.createElement('h2');
+      h.className = 'cat';
+      h.textContent = cat;
+      menu.append(h);
+      for (const g of list) {
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = g.href || '#' + g.id;
+        card.innerHTML =
+          '<span class="ico"></span><span class="txt"><b></b><small></small></span><span class="best"></span>';
+        card.querySelector('.ico').textContent = g.icon;
+        card.querySelector('b').textContent = g.name;
+        card.querySelector('small').textContent = g.skill + ' · ' + g.desc;
+        card.querySelector('.best').textContent = g.href ? '' : bestText(g);
+        menu.append(card);
+      }
     }
   }
 
@@ -39,12 +57,13 @@
       '<header class="bar"><a class="back" href="#">‹ Menu</a><h2></h2><span class="best"></span></header><main class="stage"></main>';
     root.querySelector('h2').textContent = g.name;
     const bestEl = root.querySelector('.bar .best');
-    const showBest = () => { bestEl.textContent = 'Best: ' + store.get(g.id); };
+    const showBest = () => { bestEl.textContent = bestText(g); };
     showBest();
     const api = {
       best: () => store.get(g.id),
       submit(score) {
-        const isBest = score > store.get(g.id);
+        const cur = store.get(g.id);
+        const isBest = g.lowerIsBetter ? score > 0 && (cur === 0 || score < cur) : score > cur;
         if (isBest) store.set(g.id, score);
         showBest();
         return isBest;

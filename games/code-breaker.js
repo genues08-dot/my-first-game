@@ -2,7 +2,7 @@
 // After each guess: a solid dot = right colour in the right spot,
 // a ring = right colour in the wrong spot.
 (window.__games = window.__games || []).push({
-  id: 'code-breaker', name: 'Code Breaker', skill: 'Logic', desc: 'crack the hidden colour code', icon: '🔐',
+  id: 'code-breaker', category: 'Logic', name: 'Code Breaker', skill: 'Logic', desc: 'crack the hidden colour code', icon: '🔐',
   start(el, api) {
     const COLORS = [
       { name: 'Red', color: '#ff5d6c', sym: '●' },

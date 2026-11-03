@@ -72,7 +72,7 @@
   }
 
   (window.__games = window.__games || []).push({
-    id: 'whats-next', name: "What's Next?", skill: 'Pattern spotting', desc: 'find the next number', icon: '🔢',
+    id: 'whats-next', category: 'Numbers', name: "What's Next?", skill: 'Pattern spotting', desc: 'find the next number', icon: '🔢',
     gen: makeSeq, // exposed so the puzzles can be checked in bulk
     start(el, api) {
       el.innerHTML =

@@ -1,6 +1,6 @@
 // Card Match: flip two cards at a time and find all 8 pairs in as few moves as you can.
 (window.__games = window.__games || []).push({
-  id: 'card-match', name: 'Card Match', skill: 'Memory', desc: 'find all the pairs', icon: '🃏',
+  id: 'card-match', category: 'Memory', name: 'Card Match', skill: 'Memory', desc: 'find all the pairs', icon: '🃏',
   start(el, api) {
     const SYMS = ['🍎', '🚀', '🎸', '🐙', '🌵', '⚡', '🎲', '🍕'];
     const PAIRS = SYMS.length;

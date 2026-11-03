@@ -1,6 +1,6 @@
 // Memory Sequence: tiles flash in order, repeat them back. Each round adds one tile.
 (window.__games = window.__games || []).push({
-  id: 'memory-sequence', name: 'Memory Sequence', skill: 'Memory', desc: 'repeat the flashing pattern', icon: '🟪',
+  id: 'memory-sequence', category: 'Memory', name: 'Memory Sequence', skill: 'Memory', desc: 'repeat the flashing pattern', icon: '🟪',
   start(el, api) {
     const TILES = 9;
     el.innerHTML =

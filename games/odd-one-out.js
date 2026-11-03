@@ -56,7 +56,7 @@
   }
 
   (window.__games = window.__games || []).push({
-    id: 'odd-one-out', name: 'Odd One Out', skill: 'Logic', desc: 'spot the shape that breaks the rule', icon: '🔍',
+    id: 'odd-one-out', category: 'Logic', name: 'Odd One Out', skill: 'Logic', desc: 'spot the shape that breaks the rule', icon: '🔍',
     gen: genRound, // exposed so the rounds can be checked in bulk
     start(el, api) {
       el.innerHTML =
