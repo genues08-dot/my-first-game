@@ -2,86 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Snake</title>
-<style>
-  html, body { margin: 0; height: 100%; background: #111; color: #eee; font-family: sans-serif; overflow: hidden; touch-action: none; }
-  body { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  #score { font-size: 24px; margin-bottom: 8px; }
-  canvas { background: #1c1c1c; border: 2px solid #444; max-width: 95vw; max-height: 70vh; }
-  #hint { margin-top: 10px; color: #888; font-size: 14px; }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Brain Games</title>
+<meta name="theme-color" content="#14141f">
+<meta name="description" content="Short puzzle games that exercise your memory, logic and mental math.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Brain Games">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="score">Score: 0</div>
-<canvas id="c" width="400" height="400"></canvas>
-<div id="hint">Swipe or use arrow keys. Tap to restart.</div>
-<script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-const scoreEl = document.getElementById('score');
-const N = 20, S = canvas.width / N;
-let snake, dir, nextDir, food, score, alive, timer;
+<div id="app"></div>
 
-function reset() {
-  snake = [{x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10}];
-  dir = nextDir = {x: 1, y: 0};
-  score = 0; alive = true;
-  placeFood();
-  clearInterval(timer);
-  timer = setInterval(tick, 120);
-  draw();
-}
-function placeFood() {
-  do { food = {x: Math.floor(Math.random() * N), y: Math.floor(Math.random() * N)}; }
-  while (snake.some(s => s.x === food.x && s.y === food.y));
-}
-function tick() {
-  dir = nextDir;
-  const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
-  if (head.x < 0 || head.y < 0 || head.x >= N || head.y >= N ||
-      snake.some(s => s.x === head.x && s.y === head.y)) {
-    alive = false; clearInterval(timer); draw(); return;
-  }
-  snake.unshift(head);
-  if (head.x === food.x && head.y === food.y) { score++; placeFood(); }
-  else snake.pop();
-  draw();
-}
-function draw() {
-  ctx.fillStyle = '#1c1c1c'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#e74c3c'; ctx.fillRect(food.x * S, food.y * S, S - 2, S - 2);
-  ctx.fillStyle = '#2ecc71';
-  snake.forEach(s => ctx.fillRect(s.x * S, s.y * S, S - 2, S - 2));
-  scoreEl.textContent = 'Score: ' + score;
-  if (!alive) {
-    ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#fff'; ctx.font = '32px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('Game over', 200, 190);
-    ctx.font = '18px sans-serif'; ctx.fillText('Tap to restart', 200, 225);
-  }
-}
-function turn(x, y) { if (x !== -dir.x || y !== -dir.y) nextDir = {x, y}; }
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowUp') turn(0, -1);
-  else if (e.key === 'ArrowDown') turn(0, 1);
-  else if (e.key === 'ArrowLeft') turn(-1, 0);
-  else if (e.key === 'ArrowRight') turn(1, 0);
-  else if (!alive) reset();
-});
-
-let tx, ty;
-document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, {passive: true});
-document.addEventListener('touchend', e => {
-  if (!alive) { reset(); return; }
-  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
-  if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
-  if (Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 1 : -1, 0);
-  else turn(0, dy > 0 ? 1 : -1);
-}, {passive: true});
-
-reset();
-</script>
+<!-- Each game registers itself. To add a game: create games/<name>.js, add a script line here, and add it to FILES in sw.js. -->
+<script src="games/memory-sequence.js"></script>
+<script src="games/snake.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
