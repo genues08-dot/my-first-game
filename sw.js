@@ -1,10 +1,10 @@
 // Offline support: serve saved copies instantly, refresh them in the background.
 // Updates show up the next time the app is opened. Add new files to FILES.
-const CACHE = 'brain-games-v3';
+const CACHE = 'brain-games-v4';
 const FILES = [
   './', 'index.html', 'style.css', 'app.js', 'manifest.json',
   'icon.svg', 'icon-180.png', 'icon-192.png', 'icon-512.png',
-  'games/memory-sequence.js', 'games/quick-math.js', 'games/code-breaker.js', 'games/snake.js', 'snake.html',
+  'games/memory-sequence.js', 'games/quick-math.js', 'games/code-breaker.js', 'games/card-match.js', 'games/whats-next.js', 'games/odd-one-out.js', 'games/snake.js', 'snake.html',
 ];
 
 self.addEventListener('install', (e) => {

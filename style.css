@@ -125,3 +125,37 @@ button { font: inherit; color: inherit; }
 .cb-check:disabled { background: var(--panel-2); color: var(--muted); }
 .cb-answer { display: flex; gap: 8px; }
 .cb-answer .cb-slot { width: 44px; }
+
+/* Card Match */
+.mgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: min(92vw, 56vh, 400px); aspect-ratio: 1; }
+.mcard {
+  border: 0; border-radius: 14px; padding: 0; background: var(--panel-2); color: var(--muted);
+  font-size: clamp(24px, 9vw, 40px); line-height: 1; transition: background 0.1s, transform 0.1s;
+}
+.mcard:active { transform: scale(0.96); }
+.mcard.up { background: var(--panel); color: var(--text); box-shadow: inset 0 0 0 2px var(--accent); }
+.mcard.done { background: #1d3a2e; box-shadow: inset 0 0 0 2px var(--good); }
+
+/* What's Next? */
+.seq { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: min(92vw, 420px); }
+.num {
+  min-width: 52px; padding: 12px 8px; background: var(--panel); border-radius: 12px; text-align: center;
+  font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.num.q { background: var(--accent); }
+.hud .lives { color: var(--bad); min-width: 64px; letter-spacing: 2px; }
+
+/* Odd One Out */
+.ngrid {
+  --n: 3; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 8px;
+  width: min(92vw, 56vh, 400px); aspect-ratio: 1;
+  font-size: calc(min(92vw, 56vh, 400px) / var(--n) * 0.5);
+}
+.oo-cell {
+  background: var(--panel); border: 0; border-radius: 14px; padding: 0; font-size: inherit; line-height: 1;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.oo-cell:active { background: var(--panel-2); }
+.oo-cell.wrong { background: var(--bad); }
+.oo-cell.right { box-shadow: inset 0 0 0 3px var(--good); }
+.oo-shape { display: block; line-height: 1; white-space: nowrap; pointer-events: none; }
