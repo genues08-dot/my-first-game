@@ -1,0 +1,28 @@
+/* Word Scramble */
+.ws-slots, .ws-tiles {
+  --n: 4; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 7px; align-items: center;
+  width: min(92vw, 420px, calc(var(--n) * 70px));
+  min-height: 64px; /* rows keep their height as words get longer, so the layout doesn't jump */
+}
+.ws-slot, .ws-tile {
+  aspect-ratio: 1; border: 0; border-radius: 12px; padding: 0; min-height: 44px;
+  font-size: clamp(22px, 7vw, 30px); font-weight: 700; text-transform: uppercase; line-height: 1;
+}
+.ws-tile { background: var(--accent); box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35); }
+.ws-tile:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35); }
+.ws-tile.used { background: transparent; box-shadow: inset 0 0 0 2px var(--panel); }
+.ws-slot { background: var(--panel); box-shadow: inset 0 -4px 0 var(--panel-2); }
+.ws-slot.filled { background: var(--panel-2); box-shadow: inset 0 -4px 0 var(--accent); }
+.ws-slot.right { background: var(--good); color: #0b2a1d; box-shadow: none; }
+.ws-slot.wrong { background: var(--bad); color: #fff; box-shadow: none; }
+.ws-slot.reveal { background: var(--panel); color: var(--text); box-shadow: inset 0 0 0 2px var(--muted); }
+.ws-shake { animation: ws-shake 0.35s; }
+@keyframes ws-shake { 0%, 100% { transform: none; } 25% { transform: translateX(-9px); } 75% { transform: translateX(9px); } }
+.ws-status { font-size: 18px; }
+.ws-status.ws-bad { color: var(--bad); }
+.ws-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: min(92vw, 420px); }
+.ws-act {
+  min-height: 52px; border: 0; border-radius: 14px; background: var(--panel);
+  font-size: 18px; font-weight: 600;
+}
+.ws-act:active { background: var(--panel-2); }
