@@ -1,0 +1,20 @@
+/* More Dots */
+.md-ask { font-size: 18px; color: var(--muted); text-align: center; min-height: 24px; }
+.md-pair { display: flex; gap: 12px; width: min(92vw, 420px, 64vh); }
+.md-box {
+  flex: 1; position: relative; aspect-ratio: 100 / 140; padding: 0; border: 0; border-radius: 16px;
+  background: var(--panel); transition: box-shadow 0.1s, transform 0.08s;
+}
+.md-box:active { transform: scale(0.98); }
+.md-box svg { display: block; width: 100%; height: 100%; pointer-events: none; }
+.md-box circle { fill: #ececf6; }
+.md-box.right { box-shadow: inset 0 0 0 4px var(--good), 0 0 18px rgba(61, 220, 151, 0.45); }
+.md-box.wrong { box-shadow: inset 0 0 0 4px var(--bad); }
+.md-box.wrong circle { fill: #8d8da6; }
+.md-tag {
+  position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
+  padding: 4px 12px; border-radius: 12px; font-size: 18px; font-weight: 700; white-space: nowrap;
+}
+.md-tag:empty { display: none; }
+.md-box.right .md-tag { background: var(--good); color: #0b2a1d; }
+.md-box.wrong .md-tag { background: var(--bad); color: #fff; }

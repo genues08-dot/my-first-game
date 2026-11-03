@@ -1,0 +1,18 @@
+/* Number Hunt */
+.nh-hud { align-items: baseline; width: min(92vw, 56vh, 400px); }
+.nh-find { font-size: 26px; font-weight: 700; color: var(--accent); }
+.nh-time { font-size: 24px; font-weight: 600; color: var(--good); min-width: 80px; text-align: right; }
+.nh-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  width: min(92vw, 56vh, 400px); aspect-ratio: 1;
+}
+.nh-cell {
+  border: 0; border-radius: 12px; padding: 0; background: var(--panel-2); color: var(--text);
+  font-size: calc(min(92vw, 56vh, 400px) / 5 * 0.46); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1;
+  transition: background 0.12s, opacity 0.12s, transform 0.06s;
+}
+.nh-cell:active { transform: scale(0.94); }
+.nh-cell:disabled { opacity: 1; color: var(--text); }
+.nh-cell.done { background: var(--panel); color: var(--muted); opacity: 0.35; }
+.nh-cell.wrong { background: var(--bad); color: #fff; transition: none; }
+.nh-msg { min-height: 22px; font-size: 16px; color: var(--bad); text-align: center; }

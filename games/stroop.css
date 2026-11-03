@@ -1,0 +1,36 @@
+/* Stroop Test */
+.st-show { display: flex; flex-direction: column; align-items: center; gap: 8px; width: min(92vw, 420px); }
+.st-cue {
+  height: 32px; padding: 0 16px; border-radius: 16px; display: flex; align-items: center; gap: 6px;
+  font-size: 16px; font-weight: 800; letter-spacing: 0.14em;
+  background: var(--text); color: var(--bg); border: 2px solid var(--text);
+}
+.st-cue::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--bg); }
+.st-cue.st-cue-word { background: transparent; color: var(--text); border-style: dashed; font-style: italic; }
+.st-cue.st-cue-word::before { content: 'Aa'; width: auto; height: auto; background: none; font-style: normal; letter-spacing: 0; }
+.st-cue.st-off { visibility: hidden; }
+.st-word {
+  font-size: clamp(48px, 17vw, 72px); font-weight: 800; letter-spacing: 0.03em; line-height: 1.1;
+  min-height: 80px; display: flex; align-items: center;
+}
+.st-word.st-pop { animation: st-pop 0.14s ease-out; }
+.st-word.st-shake { animation: st-shake 0.3s ease-in-out; }
+@keyframes st-pop { from { transform: scale(0.9); } to { transform: none; } }
+@keyframes st-shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+.st-note { min-height: 20px; font-size: 15px; color: var(--accent); text-align: center; font-weight: 600; white-space: nowrap; }
+.st-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: min(92vw, 420px); }
+.st-ans {
+  position: relative; border: 0; border-radius: 16px; min-height: 84px; padding: 0;
+  background: var(--sw); color: #15151f; font-size: 21px; font-weight: 800; letter-spacing: 0.06em;
+  transition: opacity 0.12s, transform 0.08s;
+}
+.st-ans:active { transform: scale(0.96); }
+.st-answers.st-reveal .st-ans { opacity: 0.22; }
+.st-answers.st-reveal .st-ans.right { opacity: 1; box-shadow: 0 0 0 3px var(--bg), 0 0 0 7px var(--good); }
+.st-answers.st-reveal .st-ans.wrong { opacity: 0.7; box-shadow: 0 0 0 3px var(--bg), 0 0 0 7px var(--bad); }
+.st-ans.right::after, .st-ans.wrong::after {
+  position: absolute; top: -10px; right: -10px; width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 18px; letter-spacing: 0;
+}
+.st-ans.right::after { content: '✓'; background: var(--good); color: #0b2a1d; }
+.st-ans.wrong::after { content: '✗'; background: var(--bad); color: #fff; }
