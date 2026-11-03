@@ -81,3 +81,20 @@ button { font: inherit; color: inherit; }
   transform: scale(0.96);
 }
 .tile.wrong { background: var(--bad); }
+
+/* Quick Math */
+.hud { display: flex; justify-content: space-between; width: min(92vw, 420px); font-size: 20px; font-variant-numeric: tabular-nums; }
+.hud .time { color: var(--good); min-width: 64px; }
+.hud .level { color: var(--muted); }
+.hud .score { color: var(--accent); min-width: 64px; text-align: right; }
+.qbar { width: min(92vw, 420px); height: 8px; background: var(--panel); border-radius: 4px; overflow: hidden; }
+.qbar-fill { height: 100%; width: 100%; background: var(--good); transition: width 0.1s linear; }
+.question { font-size: 52px; font-weight: 700; min-height: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: min(92vw, 420px); }
+.ans {
+  background: var(--panel); border: 0; border-radius: 16px; min-height: 84px;
+  font-size: 30px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.ans:active { background: var(--panel-2); }
+.ans.wrong { background: var(--bad); }
+.ans.right { background: var(--good); color: #0b2a1d; }
