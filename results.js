@@ -71,11 +71,12 @@
     return lower ? 1 - at : at;
   }
 
-  function pctText(share) {
+  // Headline for the "you vs people" chart, e.g. "Faster than 68% of people".
+  function headline(verb, share) {
     const p = share * 100;
-    if (p > 99.5) return 'more than 99%';
-    if (p < 0.5) return 'less than 1%';
-    return Math.round(p) + '%';
+    if (p >= 99.5) return 'In the top 1% of people';
+    if (p < 0.5) return 'Most people did better this time';
+    return `${verb} than ${Math.round(p)}% of people`;
   }
 
   function niceTicks(min, max, count) {
@@ -119,10 +120,11 @@
     const share = beatShare(norm, v);
     const fmt = norm.format || ((x) => String(Math.round(x)));
     const verb = norm.verb || (lower ? 'Faster' : 'Better');
-    box.append(textLine('rc-head', `${verb} than ${pctText(share)} of people`));
+    const head = headline(verb, share);
+    box.append(textLine('rc-head', head));
     box.append(textLine('rc-sub', `You: ${fmt(v)} · Average: ${fmt(norm.average)}`));
 
-    const svg = makeSvg(`${norm.title}: your result ${fmt(v)}, people average ${fmt(norm.average)}. ${verb} than ${pctText(share)} of people.`);
+    const svg = makeSvg(`${norm.title}: your result ${fmt(v)}, people average ${fmt(norm.average)}. ${head}.`);
     const plotW = W - PLOT.l - PLOT.r, plotH = H - PLOT.t - PLOT.b, base = H - PLOT.b;
     svg.append(svgEl('line', { x1: PLOT.l, x2: W - PLOT.r, y1: base, y2: base, class: 'rc-axis' }));
 
@@ -164,7 +166,8 @@
       const line = pts.map((p, i) => `${i ? 'L' : 'M'}${xOf(p[0]).toFixed(1)},${yOf(p[1]).toFixed(1)}`).join('');
       svg.append(svgEl('path', { d: `${line}L${xOf(hi)},${base}L${xOf(lo)},${base}Z`, class: 'rc-area' }));
       svg.append(svgEl('path', { d: line, class: 'rc-curve' }));
-      for (const t of niceTicks(lo, hi, 4)) label(svg, xOf(t), H - 8, fmt(t), 'rc-tick');
+      const ticks = niceTicks(lo, hi, 4);
+      ticks.forEach((t, i) => label(svg, xOf(t), H - 8, Math.round(t) + (i === ticks.length - 1 && norm.unit ? ' ' + norm.unit : ''), 'rc-tick'));
     }
 
     // average: solid hairline; you: accent line + ringed dot. Both labelled on the top row.
