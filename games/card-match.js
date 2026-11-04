@@ -60,7 +60,7 @@
     function win() {
       // 8 moves is a perfect game (100). Every extra move costs 5 points, minimum 10.
       const score = Math.max(10, 100 - (moves - PAIRS) * 5);
-      const isBest = api.submit(score);
+      const isBest = api.finish(score, panel); // records the result and draws the chart into the end panel
       panel.querySelector('.result').textContent = 'Solved in ' + moves + ' moves · score ' + score;
       panel.querySelector('.new').textContent = isBest ? 'New best!' : '';
       panel.classList.remove('hidden');

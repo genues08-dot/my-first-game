@@ -3,13 +3,14 @@
 //   { id, name, category, skill, desc, icon, start(el, api), lowerIsBetter?, formatBest? }
 // start() draws into `el` and may return a cleanup function.
 // api.best() -> saved best (0 = none yet), api.submit(score) -> true if it is a new best.
+// api.finish(score, panelEl) -> call once at game end: submit + history + results chart.
 // Bests are higher-is-better unless the game sets lowerIsBetter (e.g. fastest time).
 // formatBest(value) turns a stored best into display text (e.g. "42.1s").
-// A game with an `href` instead of start() is just a link (used for snake).
+// A game with an `href` instead of start() is just a link to another page.
 (() => {
   const games = window.__games || [];
   const root = document.getElementById('app');
-  const CATEGORIES = ['Memory', 'Logic', 'Planning', 'Attention', 'Numbers', 'Spatial', 'Words', 'Just for fun'];
+  const CATEGORIES = ['Reaction', 'Memory', 'Logic', 'Planning', 'Attention', 'Numbers', 'Spatial', 'Words', 'Just for fun'];
   let cleanup = null;
 
   const store = {
@@ -66,6 +67,14 @@
         const isBest = g.lowerIsBetter ? score > 0 && (cur === 0 || score < cur) : score > cur;
         if (isBest) store.set(g.id, score);
         showBest();
+        return isBest;
+      },
+      // Call once when a game ends: saves the best, records the result in this phone's
+      // history, and draws the results chart into the end panel (before its first button).
+      finish(score, panel) {
+        const isBest = api.submit(score);
+        const hist = window.Results ? window.Results.record(g.id, score) : [];
+        if (window.Results && panel) window.Results.render(panel, g, score, hist);
         return isBest;
       },
     };

@@ -205,7 +205,7 @@
         clearInterval(tickId);
         timeEl.textContent = '0';
         fillEl.style.width = '0%';
-        const isBest = score > 0 && api.submit(score);
+        const isBest = api.finish(score, panel); // records the result (0 too) and draws the chart
         showPanel("Time's up", 'Words solved: ' + score, isBest, 'Play again');
       }
 

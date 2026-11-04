@@ -1,11 +1,12 @@
-// Number Memory: a number is shown for a moment (1s + 0.6s per digit), then hidden.
+// Number Memory: a number is shown for a moment (1s + 0.8s per digit), then hidden.
 // Type it back on the number pad. Each correct answer adds a digit (starting at 3).
 // One mistake ends the game. Score = the longest number you recalled.
 (() => {
   const START_LEN = 3;
   const BIG_FONT = 60, SMALL_FONT = 28; // px; long numbers shrink, then wrap
 
-  const showMs = (len) => 1000 + 600 * len;
+  // Same show time as Human Benchmark's number memory test (fair comparison on the chart).
+  const showMs = (len) => 1000 + 800 * len;
   const digit = (min) => String(min + Math.floor(Math.random() * (10 - min)));
   // A random number with `len` digits as a string. Never starts with 0.
   const makeNumber = (len) => { let s = digit(1); while (s.length < len) s += digit(0); return s; };
@@ -136,6 +137,7 @@
         const row = (label, cells) => {
           const r = document.createElement('div');
           r.className = 'nm-row';
+          if (tight) r.style.gap = '2px';
           const l = document.createElement('span');
           l.className = 'nm-label';
           l.textContent = label;
@@ -152,10 +154,15 @@
         };
         const cmp = compare(target, typed);
         // Digit boxes shrink with the length so both rows line up; over 20 digits they wrap into even lines.
-        const perLine = Math.ceil(cmp.length / Math.ceil(cmp.length / 20));
-        const w = Math.max(15, Math.min(26, Math.floor(340 / perLine) - 3));
+        const lines = Math.ceil(cmp.length / 20), perLine = Math.ceil(cmp.length / lines);
+        // Wrapped rows (over 20 digits) get slightly smaller boxes and tighter spacing, so the end panel
+        // with its results chart still fits on a phone screen without scrolling.
+        const tight = lines > 1;
+        const w = Math.max(15, Math.min(tight ? 20 : 26, Math.floor(340 / perLine) - 3));
         compareEl.style.setProperty('--w', w + 'px');
         compareEl.style.setProperty('--line', perLine * (w + 3) + 'px');
+        compareEl.style.gap = tight ? '4px' : '';
+        panel.style.gap = tight ? '8px' : '';
         row('Number', cmp.map((c) => [c.want, '']));
         row('You typed', cmp.map((c) => [c.got || '–', c.ok ? '' : 'nm-x']));
       }
@@ -164,6 +171,8 @@
         phase = 'idle';
         updateKeys();
         showCompare();
+        // The best was already saved after each correct round; this records the run once (0 = none recalled).
+        api.finish(score, panel);
         showPanel('Game over', score ? 'Longest number: ' + score + ' digits' : 'No number recalled yet', newBest && score > 0, 'Play again');
       }
 

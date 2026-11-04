@@ -41,7 +41,7 @@
         '<div class="status nb-status">&nbsp;</div>' +
         '<button class="btn nb-match" disabled>Match</button>' +
         '<button class="nb-stop">Stop</button>' +
-        '<div class="panel"><h3></h3><div class="nb-text"></div><p class="new"></p><button class="btn nb-go"></button><button class="nb-stop nb-end hidden">Stop here</button></div>';
+        '<div class="panel"><h3></h3><div class="nb-text"></div><p class="new"></p><button class="btn nb-go"></button><button class="nb-stop nb-end">Stop here</button></div>';
       const nEl = el.querySelector('.nb-n');
       const stepEl = el.querySelector('.nb-step');
       const roundEl = el.querySelector('.nb-round');
@@ -69,6 +69,8 @@
       }
 
       function showPanel(title, lines, label, action, canStop, isBest) {
+        const chart = panel.querySelector('.rc'); // only the end-of-run panel shows the results chart
+        if (chart) chart.remove();
         panel.querySelector('h3').textContent = title;
         textEl.innerHTML = '';
         for (const [text, cls] of lines) {
@@ -80,7 +82,8 @@
         panel.querySelector('.new').textContent = isBest ? 'New best!' : '';
         goBtn.textContent = label;
         onGo = action;
-        endBtn.classList.toggle('hidden', !canStop);
+        // Taken out rather than hidden: a hidden last child would stop the panel from centring its content.
+        if (canStop) panel.append(endBtn); else endBtn.remove();
         panel.classList.remove('hidden');
       }
 
@@ -178,6 +181,7 @@
         setStatus('');
         const summary = best ? 'Highest level cleared: N = ' + best : 'No level cleared yet. Score 80% to clear one.';
         showPanel(title, [...lines, [summary, 'nb-sum']], 'Play again', newRun, false, newBest && best > 0);
+        api.finish(best, panel); // once per run (also after Stop): highest N cleared, 0 if none
       }
 
       function newRun() {

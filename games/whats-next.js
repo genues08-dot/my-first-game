@@ -155,7 +155,7 @@
 
       function finish() {
         running = false;
-        const isBest = api.submit(score);
+        const isBest = api.finish(score, panel); // records the result and draws the chart into the end panel
         showPanel('Game over', 'Patterns solved: ' + score, isBest && score > 0, 'Play again');
       }
 

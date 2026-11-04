@@ -21,7 +21,7 @@
       '<div class="cb-palette"></div>' +
       '<button class="btn cb-check" disabled>Check</button>' +
       '</div>' +
-      '<div class="panel hidden"><h3></h3><p class="result"></p><div class="cb-answer"></div><p class="new"></p><button class="btn again">Play again</button></div>';
+      '<div class="panel hidden"><h3></h3><p class="result"></p><div class="cb-answer"></div><p class="new"></p><div class="rc"></div><button class="btn again">Play again</button></div>';
     const boardEl = el.querySelector('.cb-board');
     const paletteEl = el.querySelector('.cb-palette');
     const checkBtn = el.querySelector('.cb-check');
@@ -119,10 +119,10 @@
       answer.innerHTML = '';
       for (const v of secret) answer.append(dot(v, 'cb-slot'));
       panel.querySelector('h3').textContent = won ? 'Cracked it!' : 'Out of guesses';
-      let isBest = false;
+      // A loss is recorded as 0 so the history stays honest (it is never a best).
+      const score = won ? (MAX - guesses.length + 1) * 10 : 0;
+      const isBest = api.finish(score, panel); // draws the chart into the .rc slot
       if (won) {
-        const score = (MAX - guesses.length + 1) * 10;
-        isBest = api.submit(score);
         panel.querySelector('.result').textContent = 'Solved in ' + guesses.length + ' guess' + (guesses.length === 1 ? '' : 'es') + ' · score ' + score;
       } else {
         panel.querySelector('.result').textContent = 'The code was:';

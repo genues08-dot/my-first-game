@@ -132,10 +132,12 @@
         draw();
         later(() => {
           if (level < LEVELS.length - 1) {
+            const chart = panel.querySelector('.rc'); // only the end-of-run panel shows the results chart
+            if (chart) chart.remove();
             showPanel('Level ' + (level + 1) + ' done!', moves + ' moves · fewest possible ' + optimal(n),
               '+' + pts + ' points · score ' + total, '', 'Next: ' + LEVELS[level + 1] + ' discs', nextLevel);
           } else {
-            const isBest = api.submit(total);
+            const isBest = api.finish(total, panel); // records the run and draws the chart into the end panel
             showPanel('All towers moved!', 'Final score ' + total + ' / ' + 100 * LEVELS.length,
               'Levels: ' + results.join(' · '), isBest ? 'New best!' : '', 'Play again', newRun);
           }

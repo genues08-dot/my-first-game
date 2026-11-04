@@ -104,7 +104,7 @@
         timeEl.textContent = fmt(t);
         findEl.textContent = 'All found';
         cells.forEach((b) => { b.disabled = true; });
-        const isBest = api.submit(t);
+        const isBest = api.finish(t, panel); // records the time and draws the chart into the end panel
         const result = misses ? 'Includes ' + misses + ' wrong tap' + (misses === 1 ? '' : 's') + ' (+' + misses + 's)' : 'No wrong taps';
         later(() => showPanel('Done in ' + fmt(t), result, isBest, 'Play again'), 350);
       }
