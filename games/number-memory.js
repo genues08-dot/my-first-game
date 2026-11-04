@@ -1,4 +1,4 @@
-// Number Memory: a number is shown for a moment (1s + 0.6s per digit), then hidden.
+// Number Memory: a number is shown for a moment (1s + 0.8s per digit), then hidden.
 // Type it back on the number pad. Each correct answer adds a digit (starting at 3).
 // One mistake ends the game. Score = the longest number you recalled.
 (() => {
