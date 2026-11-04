@@ -529,3 +529,30 @@ button { font: inherit; color: inherit; }
   font-size: 18px; font-weight: 600;
 }
 .ws-act:active { background: var(--panel-2); }
+
+/* End panels can scroll if a results chart makes them taller than the screen */
+.panel { overflow-y: auto; justify-content: flex-start; padding: 16px 0; }
+.panel > :first-child { margin-top: auto; }
+.panel > :last-child { margin-bottom: auto; }
+
+/* Results chart (results.js) */
+.rc { width: min(88vw, 360px); display: flex; flex-direction: column; gap: 4px; text-align: center; }
+.panel .rc p { margin: 0; }
+.panel .rc .rc-head { font-size: 18px; font-weight: 700; color: var(--text); }
+.panel .rc .rc-sub { font-size: 13px; color: var(--muted); }
+.panel .rc .rc-src { font-size: 11px; color: var(--muted); line-height: 1.35; }
+.rc-svg { width: 100%; height: auto; display: block; margin: 4px 0 2px; overflow: visible; }
+.rc-axis { stroke: #3a3a55; stroke-width: 1; }
+.rc-area { fill: #a3a3c8; fill-opacity: 0.14; }
+.rc-curve { fill: none; stroke: #a3a3c8; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.rc-col { fill: #4b4b6e; }
+.rc-col-you { fill: var(--accent); }
+.rc-avg { stroke: #8a8aa8; stroke-width: 1; }
+.rc-you { stroke: var(--accent); stroke-width: 2; }
+.rc-you-dot { fill: var(--accent); stroke: #14141f; stroke-width: 2; }
+.rc-svg text { font-family: inherit; }
+.rc-tick { fill: var(--muted); font-size: 11px; }
+.rc-note { fill: var(--muted); font-size: 11px; }
+.rc-you-label { fill: var(--text); font-size: 12px; font-weight: 700; }
+.rc-tip { fill: var(--text); font-size: 12px; font-weight: 600; }
+.rc-hit { fill: transparent; cursor: pointer; }
