@@ -15,10 +15,16 @@
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   };
-  // true = go (green), false = no-go (red). Exactly 30 go / 10 no-go, the first 3 are go.
+  // true = go (green), false = no-go (red). Exactly 30 go / 10 no-go, the first 3 are go,
+  // and never more than 2 reds in a row (long red runs would let the urge to tap fade).
+  const MAX_RED_RUN = 2;
+  const longestRedRun = (seq) => { let run = 0, max = 0; for (const go of seq) { run = go ? 0 : run + 1; max = Math.max(max, run); } return max; };
   function makeSequence(rnd = Math.random) {
-    const rest = [...Array(GOS - FIRST_GO).fill(true), ...Array(TRIALS - GOS).fill(false)];
-    return [...Array(FIRST_GO).fill(true), ...shuffle(rest, rnd)];
+    for (let tries = 0; ; tries++) {
+      const rest = [...Array(GOS - FIRST_GO).fill(true), ...Array(TRIALS - GOS).fill(false)];
+      const seq = [...Array(FIRST_GO).fill(true), ...shuffle(rest, rnd)];
+      if (longestRedRun(seq) <= MAX_RED_RUN || tries > 500) return seq;
+    }
   }
   const gapMs = (rnd = Math.random) => Math.round(GAP_MIN + rnd() * (GAP_MAX - GAP_MIN));
   const hitPoints = (rt) => Math.max(1, Math.min(10, 10 - Math.floor((rt - 250) / 50)));
