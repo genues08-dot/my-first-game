@@ -143,7 +143,7 @@
         clearInterval(tickId);
         const time = clock(Date.now() - startAt);
         timeEl.textContent = time;
-        const isBest = api.submit(moves);
+        const isBest = api.finish(moves, panel); // records the result and draws the chart into the end panel
         later(() => showPanel('Solved!', 'Solved in ' + movesText(moves) + ' · ' + time, isBest, 'Play again'), 700);
       }
 

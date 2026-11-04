@@ -240,7 +240,7 @@
         sel = -1;
         paint();
         gridEl.classList.add('solved');
-        const isBest = api.submit(t);
+        const isBest = api.finish(t, panel); // records the time and draws the chart into the end panel
         timers.push(setTimeout(() => showPanel('Solved!', 'Solved in ' + fmtTenths(t), isBest, 'Play again'), 800));
       }
 

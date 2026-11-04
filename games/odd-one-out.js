@@ -147,7 +147,7 @@
         clearInterval(tickId);
         timeEl.textContent = '0';
         fillEl.style.width = '0%';
-        const isBest = api.submit(score);
+        const isBest = api.finish(score, panel); // records the result and draws the chart into the end panel
         showPanel("Time's up", 'Odd ones found: ' + score, isBest && score > 0, 'Play again');
       }
 

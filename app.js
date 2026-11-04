@@ -6,7 +6,7 @@
 // api.finish(score, panelEl) -> call once at game end: submit + history + results chart.
 // Bests are higher-is-better unless the game sets lowerIsBetter (e.g. fastest time).
 // formatBest(value) turns a stored best into display text (e.g. "42.1s").
-// A game with an `href` instead of start() is just a link (used for snake).
+// A game with an `href` instead of start() is just a link to another page.
 (() => {
   const games = window.__games || [];
   const root = document.getElementById('app');

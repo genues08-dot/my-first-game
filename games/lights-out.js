@@ -210,7 +210,7 @@
 
       function finish() {
         running = false;
-        const isBest = cleared > 0 && api.submit(cleared);
+        const isBest = api.finish(cleared, panel); // giving up with 0 cleared records 0 (never a best)
         showPanel('Run over', 'Levels cleared: ' + cleared, isBest, 'Play again');
       }
 

@@ -2,7 +2,8 @@
 // Two equal tiles that run into each other merge into one tile worth their sum, and that sum
 // is added to your score. A tile merges at most once per move. Every move that changes the
 // board adds a new tile (a 2, or now and then a 4). Make a 2048 tile, then keep going until
-// no move is left. An unfinished game is saved, so you can continue it later.
+// no move is left (or end it early with "New game", tapped twice: that game is recorded too).
+// An unfinished game is saved, so you can continue it later.
 (() => {
   const N = 4;
   const GOAL = 2048;
@@ -155,6 +156,8 @@
       }
 
       function showPanel(title, result, note, label, action) {
+        const chart = panel.querySelector('.rc'); // only the end-of-game panel shows the results chart
+        if (chart) chart.remove();
         panel.querySelector('h3').textContent = title;
         panel.querySelector('.result').textContent = result;
         panel.querySelector('.new').textContent = note;
@@ -204,11 +207,13 @@
         }
       }
 
-      function gameOver() {
+      // The game ends when no move is left, or when the player starts over mid-game ("Game ended").
+      function gameOver(title) {
         playing = false;
         clearSave();
-        const isBest = api.submit(score);
-        showPanel('No moves left', 'Score ' + score + ' · top tile ' + maxTile(grid), isBest && score > 0 ? 'New best!' : '', 'Play again', newGame);
+        showPanel(title || 'No moves left', 'Score ' + score + ' · top tile ' + maxTile(grid), '', 'Play again', newGame);
+        const isBest = api.finish(score, panel); // records the game once and draws the chart into the end panel
+        panel.querySelector('.new').textContent = isBest && score > 0 ? 'New best!' : '';
       }
 
       function resume() {
@@ -239,8 +244,13 @@
           confirmTimer = setTimeout(resetRestart, 2500);
           return;
         }
-        if (score > 0) api.submit(score);
-        newGame();
+        resetRestart();
+        if (score > 0) { // a real game: record it and show the result
+          flush(); // settle a running slide first (it may end the game by itself)
+          if (playing) gameOver('Game ended');
+          return;
+        }
+        newGame(); // nothing scored yet: just deal a fresh board
       });
 
       // ---- input: swipes on the board, arrow keys anywhere ----

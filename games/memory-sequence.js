@@ -34,15 +34,20 @@
     }
 
     function nextRound() {
-      seq.push(Math.floor(Math.random() * TILES));
+      // Standard sequence-memory timing (the same as Human Benchmark's test, so the
+      // "you vs people" chart is a fair comparison): a 1 s pause, then each tile lights
+      // for 0.5 s back to back, and a new tile is never the same as the one before it.
+      let next;
+      do { next = Math.floor(Math.random() * TILES); } while (seq.length && next === seq[seq.length - 1]);
+      seq.push(next);
       pos = 0;
       accepting = false;
       setStatus('Round ' + seq.length + ' · Watch');
-      const step = Math.max(320, 700 - seq.length * 25); // gets quicker as you go
-      let t = 600;
+      const STEP = 500;
+      let t = 1000;
       for (const i of seq) {
-        later(() => flash(i, step * 0.65), t);
-        t += step;
+        later(() => flash(i, STEP), t);
+        t += STEP;
       }
       later(() => { accepting = true; setStatus('Your turn', true); }, t);
     }
@@ -63,7 +68,7 @@
       accepting = false;
       tiles[wrongTile].classList.add('wrong');
       const score = seq.length - 1; // rounds fully completed
-      const isBest = api.submit(score);
+      const isBest = api.finish(score, panel); // records the result and draws the chart into the end panel
       setStatus('');
       later(() => {
         tiles[wrongTile].classList.remove('wrong');
