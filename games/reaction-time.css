@@ -1,0 +1,30 @@
+/* Reaction Time */
+.rt-hud { font-size: 18px; }
+.rt-try { color: var(--muted); }
+.rt-avg { color: var(--accent); }
+/* No colour transitions here: the green must appear in a single frame for the timing to be fair. */
+.rt-box {
+  width: 100%; max-width: 420px; height: min(58vh, 460px); flex: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  border: 0; border-radius: 20px; padding: 16px; background: var(--panel); color: var(--text);
+  touch-action: none; -webkit-touch-callout: none;
+}
+.rt-big { font-size: 36px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.rt-small { font-size: 18px; opacity: 0.85; min-height: 22px; }
+.rt-box.rt-wait { background: #c62f45; color: #fff; }
+.rt-box.rt-go { background: var(--good); color: #0b2a1d; }
+.rt-box.rt-go .rt-big { font-size: 72px; letter-spacing: 0.04em; }
+.rt-box.rt-result .rt-big { font-size: 60px; }
+.rt-box.rt-early { box-shadow: inset 0 0 0 4px var(--bad); }
+.rt-box.rt-early .rt-big { color: var(--bad); }
+.rt-box.rt-idle .rt-big { color: var(--muted); font-size: 28px; }
+.rt-tries { display: flex; gap: 8px; width: 100%; max-width: 420px; }
+.rt-chip {
+  flex: 1; padding: 6px 0; border-radius: 10px; background: var(--panel); color: var(--muted);
+  font-size: 16px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums;
+}
+.rt-chip.rt-done { color: var(--text); background: var(--panel-2); }
+.rt-chip.rt-cur { box-shadow: inset 0 0 0 2px var(--accent); }
+.rt-panel.rt-over .result { color: var(--text); font-size: 22px; font-weight: 700; }
+.panel .rt-detail { font-size: 15px; max-width: 340px; }
+.rt-panel .new:empty, .rt-panel .rt-detail:empty { display: none; }
