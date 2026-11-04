@@ -140,10 +140,12 @@
         svg.append(column(xOf(k) - bw / 2, base - h, bw, h, k === youKey ? 'rc-col rc-col-you' : 'rc-col'));
       }
       const every = keys.length <= 12 ? 1 : keys.length <= 24 ? 2 : 5;
-      for (const k of keys) if ((k - lo) % every === 0) label(svg, xOf(k), H - 8, String(k), 'rc-tick', 'middle');
+      const tick = norm.tickLabel || String;
+      for (const k of keys) if ((k - lo) % every === 0) label(svg, xOf(k), H - 8, tick(k), 'rc-tick', 'middle');
     } else {
       const xs = norm.cdf.map((p) => p[0]), ys = norm.cdf.map((p) => p[1]);
-      const f = monotone(xs, ys), lo = xs[0], hi = xs[xs.length - 1];
+      // draw only the useful window (norm.range); percentages still use the full data
+      const f = monotone(xs, ys), [lo, hi] = norm.range || [xs[0], xs[xs.length - 1]];
       xOf = (x) => PLOT.l + ((Math.min(hi, Math.max(lo, x)) - lo) / (hi - lo)) * plotW;
       const N = 96, pts = [];
       for (let i = 0; i <= N; i++) { const x = lo + ((hi - lo) * i) / N; pts.push([x, Math.max(0, f.slope(x))]); }
@@ -167,7 +169,8 @@
 
     // average: solid hairline; you: accent line + ringed dot. Both labelled on the top row.
     const ax = xOf(norm.average), yx = xOf(v);
-    const offChart = norm.kind !== 'discrete' && (v < norm.cdf[0][0] || v > norm.cdf[norm.cdf.length - 1][0]);
+    const dom = norm.kind === 'discrete' ? null : norm.range || [norm.cdf[0][0], norm.cdf[norm.cdf.length - 1][0]];
+    const offChart = !!dom && (v < dom[0] || v > dom[1]);
     svg.append(svgEl('line', { x1: ax, x2: ax, y1: PLOT.t - 6, y2: base, class: 'rc-avg' }));
     svg.append(svgEl('line', { x1: yx, x2: yx, y1: PLOT.t - 6, y2: base, class: 'rc-you' }));
     svg.append(svgEl('circle', { cx: yx, cy: PLOT.t - 6, r: 5, class: 'rc-you-dot' }));
